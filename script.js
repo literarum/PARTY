@@ -96,7 +96,7 @@ function init() {
                 <div class="card-back">
                     <div class="${messageClass}">${employee.greeting}</div>
                     <img class="employee-avatar" src="${imagePath}" alt="${employee.name}">
-                    <button class="thank-you-btn">С Днем Рождения!</button>
+                    <button class="thank-you-btn">НАЖМИ! <3</button>
                 </div>
             </div>
         `;
