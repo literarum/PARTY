@@ -74,7 +74,7 @@ function init() {
     let swiper = null;
     
     function checkWindowSize() {
-        const isMobile = window.innerWidth <= 600;
+        const isMobile = window.innerWidth <= 400;
         
         // Проверяем, нужно ли инициализировать или уничтожить слайдер
         if (isMobile && !swiper) {
@@ -105,7 +105,6 @@ function init() {
                 });
             }, 100);
         } else if (!isMobile && swiper) {
-            // Если перешли на десктоп и слайдер существует, уничтожаем его
             swiper.destroy(true, true);
             swiper = null;
         }
@@ -124,7 +123,7 @@ function init() {
             loadingScreen.style.display = 'none';
             mainScreen.style.opacity = '1';
             typeText(greetingText, 'С Днём Рождения, Лена!');
-            checkWindowSize(); // Проверяем размер для инициализации слайдера
+            checkWindowSize();
         }, 500);
     });
 
