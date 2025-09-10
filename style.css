@@ -6,8 +6,9 @@
     --dark: #333333;
     --light: #FFFFFF;
     --gradient: linear-gradient(135deg, var(--blue) 0%, var(--mint) 50%, var(--pink) 100%);
-    --card-width: 240px;
-    --card-height: 300px;
+    --card-width: clamp(180px, 25vw, 240px);
+    --card-height: calc(var(--card-width) * 1.25);
+    --character-size: clamp(80px, 15vw, 150px);
 }
 
 * {
@@ -135,7 +136,7 @@ h3 {
 }
 
 .greeting-text {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     margin: 1rem 0;
     text-align: center;
     opacity: 0;
@@ -152,8 +153,8 @@ h3 {
 }
 
 .character {
-    width: 150px;
-    height: 150px;
+    width: var(--character-size);
+    height: var(--character-size);
     background: var(--light);
     border-radius: 50%;
     display: flex;
@@ -215,34 +216,24 @@ h3 {
     text-align: center;
     color: var(--light);
     margin-bottom: 1.5rem;
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .cards-container {
     display: grid;
-    grid-template-columns: repeat(4, var(--card-width));
+    grid-template-columns: repeat(auto-fit, minmax(var(--card-width), 1fr));
     gap: 1.5rem;
     margin: 0 auto;
     justify-content: center;
     max-width: 1300px;
 }
 
-
 /* Медиа-запросы для адаптивного отображения */
-@media (max-width: 1200px) {
-    .cards-container {
-        grid-template-columns: repeat(3, var(--card-width));
-    }
-}
-
-@media (max-width: 900px) {
-    .cards-container {
-        grid-template-columns: repeat(2, var(--card-width));
-    }
-
-    .greeting-text {
-        font-size: 2rem;
+@media (max-width: 600px) {
+    :root {
+        --card-width: 80vw;
+        --card-height: calc(var(--card-width) * 1.25);
     }
 }
 
@@ -380,8 +371,8 @@ h3 {
     position: absolute;
     bottom: 15px;
     right: 15px;
+    /* Фиксируем размер аватара для предотвращения искажений */
     width: 80px;
-    /* Увеличиваем для минимизации искажений */
     height: 80px;
     border-radius: 50%;
     border: 3px solid var(--orange);
