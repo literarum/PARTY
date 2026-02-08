@@ -6,8 +6,8 @@
     --dark: #333333;
     --light: #FFFFFF;
     --gradient: linear-gradient(135deg, var(--blue) 0%, var(--mint) 50%, var(--pink) 100%);
-    --card-width: 240px;
-    --card-height: 300px;
+    --card-width: clamp(180px, 22vw, 240px);
+    --card-height: clamp(240px, 30vw, 320px);
 }
 
 * {
@@ -31,8 +31,22 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    position: static !important;
-    transform: none !important;
+}
+
+.version-badge {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 10001;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ff2b2b;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 4px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    pointer-events: none;
 }
 
 h1,
@@ -127,7 +141,7 @@ h3 {
 .main-screen {
     opacity: 0;
     transition: opacity 1s;
-    padding: 2rem;
+    padding: clamp(1rem, 3vw, 2rem);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,7 +149,7 @@ h3 {
 }
 
 .greeting-text {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
     margin: 1rem 0;
     text-align: center;
     opacity: 0;
@@ -143,120 +157,36 @@ h3 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.characters-container {
-    display: none;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
-}
-
-.character {
-    width: 150px;
-    height: 150px;
-    background: var(--light);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.3s;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.character:hover {
-    transform: translateY(-10px);
-}
-
-.character img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.character .speech-bubble {
-    position: absolute;
-    top: -80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--light);
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    opacity: 0;
-    transition: opacity 0.3s, transform 0.3s;
-    pointer-events: none;
-    font-size: 0.8rem;
-    width: 120px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.character .speech-bubble:after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 10px 10px 0;
-    border-style: solid;
-    border-color: var(--light) transparent transparent;
-}
 
 .employee-cards-section {
     width: 100%;
     max-width: 1300px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: clamp(0.5rem, 2vw, 1rem);
 }
 
 .section-title {
     text-align: center;
     color: var(--light);
-    margin-bottom: 1.5rem;
-    font-size: 2.5rem;
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .cards-container {
     display: grid;
-    grid-template-columns: repeat(4, var(--card-width));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-width)), 1fr));
+    gap: clamp(0.75rem, 2.5vw, 1.5rem);
     margin: 0 auto;
     justify-content: center;
     max-width: 1300px;
 }
 
 
-/* Медиа-запросы для адаптивного отображения */
-@media (max-width: 1200px) {
-    .cards-container {
-        grid-template-columns: repeat(3, var(--card-width));
-    }
-}
-
-@media (max-width: 900px) {
-    .cards-container {
-        grid-template-columns: repeat(2, var(--card-width));
-    }
-
-    .greeting-text {
-        font-size: 2rem;
-    }
-}
-
-.mobile-card {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .employee-card {
     height: var(--card-height);
-    width: var(--card-width);
+    width: 100%;
+    max-width: var(--card-width);
     position: relative;
     cursor: pointer;
     perspective: 1000px;
@@ -276,21 +206,22 @@ h3 {
 }
 
 .employee-card.flipped {
-    position: relative;
-    z-index: 998;
-}
-
-.employee-card.flipped .card-inner {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 90vw;
-    height: 85vh;
+    width: min(92vw, 480px);
+    height: min(82vh, 620px);
     max-width: 480px;
     max-height: 600px;
-    transform: translate(-50%, -50%) rotateY(180deg);
+    transform: translate(-50%, -50%);
     z-index: 9998;
-    isolation: auto !important;
+}
+
+.employee-card.flipped .card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: rotateY(180deg);
 }
 
 .card-front,
@@ -335,7 +266,7 @@ h3 {
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     text-align: center;
-    font-size: 1.1rem;
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
 }
 
 .greeting-message {
@@ -344,7 +275,7 @@ h3 {
     border-radius: 15px;
     position: relative;
     font-family: 'Caveat', 'CustomRussianFont', cursive;
-    font-size: 2rem;
+    font-size: clamp(1.2rem, 3.8vw, 2rem);
     text-align: center;
     color: var(--dark);
     width: 100%;
@@ -354,16 +285,6 @@ h3 {
     justify-content: center;
     overflow-y: auto;
     line-height: 1.4;
-}
-
-@media (max-width: 600px) {
-    .greeting-message {
-        font-size: 1.5rem;
-    }
-
-    .long-message {
-        font-size: 1.2rem;
-    }
 }
 
 .greeting-message:after {
@@ -429,25 +350,10 @@ h3 {
     left: 50%;
     transform: translateX(-50%);
     transition: all 0.2s;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
     box-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
     animation: pulseAndGlow 2s infinite;
     z-index: 10;
-}
-
-.thank-you-btn:before {
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 255, 255, 0.9);
-    color: var(--dark);
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.9rem;
-    white-space: nowrap;
-    opacity: 0;
-    animation: fadeInOut 4s 1s infinite;
 }
 
 @keyframes pulseAndGlow {
@@ -482,18 +388,6 @@ h3 {
     }
 }
 
-@keyframes fadeInOut {
-
-    0%,
-    100% {
-        opacity: 0;
-    }
-
-    20%,
-    80% {
-        opacity: 1;
-    }
-}
 
 .thank-you-btn:hover {
     animation-play-state: paused;
@@ -517,33 +411,6 @@ h3 {
     display: block;
 }
 
-.swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s;
-    height: auto;
-}
-
-.swiper-slide-active {
-    transform: scale(1.05);
-}
-
-.swiper-pagination {
-    bottom: 0;
-}
-
-.swiper-pagination-bullet {
-    width: 12px;
-    height: 12px;
-    background: var(--orange);
-    opacity: 0.5;
-}
-
-.swiper-pagination-bullet-active {
-    opacity: 1;
-    background: var(--orange);
-}
 
 #confetti-canvas {
     position: fixed;
@@ -552,7 +419,7 @@ h3 {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 9999 !important;
+    z-index: 10000 !important;
 }
 
 .greeting-message::-webkit-scrollbar {
@@ -574,5 +441,45 @@ h3 {
 }
 
 .long-message {
-    font-size: 1.4rem;
+    font-size: clamp(1rem, 3.2vw, 1.4rem);
+}
+
+@media (max-width: 768px) {
+    .employee-card.flipped {
+        height: min(85vh, 560px);
+    }
+
+    .card-back {
+        padding: 1.5rem;
+    }
+
+    .card-back .employee-avatar {
+        width: 64px;
+        height: 64px;
+    }
+}
+
+@media (max-width: 480px) {
+    .loading-logo {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .start-button {
+        font-size: 1.2rem;
+        padding: 0.85rem 1.5rem;
+    }
+
+    .employee-card.flipped {
+        width: min(94vw, 420px);
+        height: min(80vh, 520px);
+    }
+
+    .card-back {
+        padding: 1.2rem;
+    }
+
+    .thank-you-btn {
+        padding: 0.5rem 1rem;
+    }
 }
