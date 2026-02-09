@@ -4,8 +4,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     paths-ignore:
-              - 'pr-preview/**'
-
+      - 'pr-preview/**'
 
 permissions:
   contents: write
@@ -13,18 +12,14 @@ permissions:
 
 jobs:
   preview:
-      concurrency:
+    concurrency:
       group: preview-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-      
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-              
-                
       - uses: rossjrw/pr-preview-action@v1
-
-                with:
+        with:
           source-dir: ./
           preview-branch: main
           wait-for-pages-deployment: true
