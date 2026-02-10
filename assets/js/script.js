@@ -19,7 +19,6 @@ const loadingScreen = document.querySelector('.loading-screen');
 const startButton = document.querySelector('.start-button');
 const mainScreen = document.querySelector('.main-screen');
 const greetingText = document.querySelector('.greeting-text');
-const characters = document.querySelectorAll('.character');
 const cardsContainer = document.querySelector('.cards-container');
 const overlay = document.querySelector('.overlay');
 
@@ -68,25 +67,20 @@ function launchFireworks(x, y) {
     }, 400);
 }
 
-function init() {    
-    startButton.addEventListener('click', () => {
-        loadingScreen.style.opacity = '0';
-        loadingScreen.style.transform = 'translateY(-100%)';
-        setTimeout(() => {
-            loadingScreen.style.display = 'none';
-            mainScreen.style.opacity = '1';
-            typeText(greetingText, 'С Днём Рождения, Лена!');
-        }, 500);
+function closeAllCards() {
+    document.querySelectorAll('.employee-card.flipped').forEach(card => {
+        card.classList.remove('flipped');
     });
+    overlay.classList.remove('active');
+}
 
+function buildCards() {
     employees.forEach((employee) => {
-        const imagePath = `./LENA/img/${employee.character}.png`;
-
+        const imagePath = `./assets/img/LENA/img/${employee.character}.png`;
         const card = document.createElement('div');
-        card.className = 'employee-card desktop-card';
-
         const messageClass = employee.long ? 'greeting-message long-message' : 'greeting-message';
 
+        card.className = 'employee-card desktop-card';
         card.innerHTML = `
             <div class="card-inner">
                 <div class="card-front">
@@ -105,7 +99,9 @@ function init() {
         const rotation = Math.random() * 10 - 5;
         card.style.transform = `rotate(${rotation}deg)`;
     });
+}
 
+function attachCardListeners() {
     document.querySelectorAll('.employee-card').forEach(card => {
         card.addEventListener('click', () => {
             if (!card.classList.contains('flipped')) {
@@ -115,36 +111,42 @@ function init() {
         });
 
         const thankButton = card.querySelector('.thank-you-btn');
-        if (thankButton) {
-            thankButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const rect = thankButton.getBoundingClientRect();
-                const x = (rect.left + rect.right) / 2 / window.innerWidth;
-                const y = (rect.top + rect.bottom) / 2 / window.innerHeight;
-
-                launchFireworks(x, y);
-
-                setTimeout(() => {
-                    card.classList.remove('flipped');
-                    overlay.classList.remove('active');
-                }, 1500);
-            });
+        if (!thankButton) {
+            return;
         }
+
+        thankButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const rect = thankButton.getBoundingClientRect();
+            const x = (rect.left + rect.right) / 2 / window.innerWidth;
+            const y = (rect.top + rect.bottom) / 2 / window.innerHeight;
+
+            launchFireworks(x, y);
+
+            setTimeout(closeAllCards, 1500);
+        });
+    });
+}
+
+function init() {
+    startButton.addEventListener('click', () => {
+        loadingScreen.style.opacity = '0';
+        loadingScreen.style.transform = 'translateY(-100%)';
+        setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            mainScreen.style.opacity = '1';
+            typeText(greetingText, 'С Днём Рождения, Лена!');
+        }, 500);
     });
 
-    overlay.addEventListener('click', () => {
-        document.querySelectorAll('.employee-card.flipped').forEach(card => {
-            card.classList.remove('flipped');
-        });
-        overlay.classList.remove('active');
-    });
+    buildCards();
+    attachCardListeners();
+
+    overlay.addEventListener('click', closeAllCards);
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && document.querySelector('.employee-card.flipped')) {
-            document.querySelectorAll('.employee-card.flipped').forEach(card => {
-                card.classList.remove('flipped');
-            });
-            overlay.classList.remove('active');
+            closeAllCards();
         }
     });
 }
