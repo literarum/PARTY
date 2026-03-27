@@ -576,3 +576,28 @@ h3 {
 .long-message {
     font-size: 1.4rem;
 }
+
+
+/* Tablet-specific adjustments for flipped employee card */
+@media (max-width: 900px) {
+  .employee-card.flipped {
+    z-index: 10000;
+  }
+  .employee-card.flipped .card-inner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 95vw;
+    height: 90vh;
+    max-width: 480px;
+    max-height: 640px;
+        transform: translate(-50%, -50%) rotateY(180deg);
+    z-index: 10001;
+  }
+}
+
+/* Increase confetti z-index to ensure it appears above card */
+#confetti-canvas {
+  z-index: 10002 !important;
+}
+
